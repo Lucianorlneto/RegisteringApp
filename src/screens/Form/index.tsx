@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import moment from 'moment';
 import {
   Image, ScrollView, Text, View, TextInput, TouchableOpacity,
 } from 'react-native';
+
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import DatePicker from 'react-native-date-picker';
 
@@ -14,9 +17,9 @@ const Form: React.FC<any> = ({ route }) => {
   const [avatarPath, setAvatarPath] = useState('');
 
   const [datePickerModal, setDatePickerModal] = useState(false);
+  const { onEdit, user } = route.params;
 
   useEffect(() => {
-    const { onEdit, user } = route.params;
     if (onEdit) {
       setName(user.name);
       setBirthDate(new Date(user.birthDate));
@@ -40,25 +43,42 @@ const Form: React.FC<any> = ({ route }) => {
 
         <View style={{ marginVertical: 4 }}>
           <Text>Nome:</Text>
-          <TextInput style={{ borderBottomWidth: 1, fontSize: 18 }} placeholder="Nome do usuário" value={name !== '' ? name : ''} />
+          <TextInput style={{ borderBottomWidth: 1, fontSize: 18 }} placeholder="Nome do usuário" value={name !== '' ? name : ''} onChangeText={(text) => setName(text)} />
         </View>
         <View style={{ marginVertical: 4 }}>
           <Text>Data de nascimento:</Text>
-          <TouchableOpacity onPress={() => setDatePickerModal(true)}>
-            <Text>{birthDate !== 'Escolha a data de nascimento' ? birthDate.toLocaleDateString('pt-BR') : ''}</Text>
+          <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => setDatePickerModal(true)}>
+            <Text style={{ marginRight: 8, fontSize: 18 }}>
+              {birthDate !== '' ? moment(birthDate).format('DD/MM/yyyy') : 'Escolha a data de nascimento'}
+            </Text>
+            <FontAwesome style={{ alignSelf: 'center' }} name="calendar" size={18} />
           </TouchableOpacity>
-          {/* <DatePicker
+          <DatePicker
             modal
             open={datePickerModal}
-            date={date}
+            date={birthDate === '' ? new Date() : birthDate}
+            mode="date"
             onConfirm={(date) => {
-              setOpen(false);
-              setDate(date);
+              setDatePickerModal(false);
+              setBirthDate(date);
             }}
             onCancel={() => {
-              setOpen(false);
+              setDatePickerModal(false);
             }}
-          /> */}
+          />
+        </View>
+        <View style={{
+          bottom: 20, position: 'absolute', width: '100%', justifyContent: 'center', alignItems: 'center',
+        }}
+        >
+          <TouchableOpacity
+            style={{
+              padding: 8, elevation: 3, backgroundColor: 'gray', borderRadius: 3,
+            }}
+            onPress={() => console.log('botão')}
+          >
+            <Text>{onEdit ? 'Editar Usuário' : 'Cadastrar Usuário'}</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </ScrollView>

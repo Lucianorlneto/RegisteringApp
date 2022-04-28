@@ -1,6 +1,7 @@
-import { useNavigation } from '@react-navigation/native';
 import React from 'react';
+import moment from 'moment';
 import { Text, TouchableOpacity, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 // import { Container } from './styles';
 interface User{
@@ -36,7 +37,7 @@ const ListItem: React.FC<User> = ({ data }) => {
       <Text>
         Data de nascimento:
         {' '}
-        {new Date(data.birthDate).toLocaleDateString('pt-BR')}
+        {moment(data.birthDate).format('DD/MM/yyyy')}
       </Text>
     </TouchableOpacity>
   );
