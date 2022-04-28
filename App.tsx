@@ -8,19 +8,26 @@
  * @format
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import 'react-native-gesture-handler';
+import SplashScreen from 'react-native-splash-screen';
 import Toast from 'react-native-toast-message';
 
 import { NavigationContainer } from '@react-navigation/native';
 
 import Main from './src/navigation/Main';
 
-const App = () => (
-  <NavigationContainer>
-    <Main />
-    <Toast />
-  </NavigationContainer>
-);
+const App = () => {
+  useEffect(() => {
+    SplashScreen.hide();
+  });
+
+  return (
+    <NavigationContainer>
+      <Main />
+      <Toast />
+    </NavigationContainer>
+  );
+};
 
 export default App;
